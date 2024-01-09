@@ -1,14 +1,57 @@
 const express = require('express')
-const morgan = require('morgan');
+const morgan = require('morgan'); // thirdpart middleware instead of app.use()
+const mongoose = require('mongoose'); // third part library for object document mapping (ODM)
+const Blog = require('./models/blog');
+
+// mongo db connect url
+const dbURL = "mongodb+srv://htetwaiyan7191:719171@node-express-tuto.2vir9km.mongodb.net/?retryWrites=true&w=majority"
+mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
+.then((result) => app.listen(3000))
+.catch((err) => console.log(err)); // connect database 
 
 //express app 
 const app = express();
 
-//listen for request 
-app.listen(3000);
-
 // middleware using morgan library ! 
 app.use(morgan('tiny'));
+
+// mongoose and mongo sandbox routes 
+
+app.get('/add-blog', (req, res) => {
+    const blog = new Blog({
+        title: 'Blog 3',
+        snippet: 'Hello',
+        body: 'I am learning nodejs these days '
+    });
+    blog.save()
+    .then((result) => {
+        res.send(result)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
+
+// list all blogs 
+app.get('/all-blogs', (req, res) => {
+    Blog.find().then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+})
+
+// find single blog 
+app.get('/single-blog', (req, res) => {
+    Blog.findById('659cc736588db5b6456936a0')
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+})
 
 // middle ware using express static for static files 
 app.use(express.static('public'));
