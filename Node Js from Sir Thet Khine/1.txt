@@ -1,0 +1,10 @@
+what is node js ? 
+node js is a javascript runtime . it can run server side application . 
+
+Why node js is popular ? 
+response time is faster because it does not need to wait because of non blocking technique.
+
+Adv of Non blocking (Async)
+get advantage for IO tasks which are jobs not working on CPU. Jobs that are working on database or files.
+
+what is single thread event loop 
