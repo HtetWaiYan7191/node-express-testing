@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const User = require('./models/user');
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 // mongo db connect url
 const dbURL = "mongodb+srv://htetwaiyan7191:719171@node-express-tuto.2vir9km.mongodb.net/?retryWrites=true&w=majority";
@@ -27,8 +28,11 @@ app.use(morgan('dev'));
 // use blogs routes 
 app.use('/blogs', blogRoutes);
 
-//list users 
+//use user routes 
 app.use('/users', userRoutes);
+
+//use category routes
+app.use('/categories', categoryRoutes);
 
 //create user 
 // app.post('/users', (req,res) => {
@@ -102,23 +106,23 @@ app.use(express.static('public'));
 // make post request available
 // app.use(express.urlencoded({extended: true}));
 
-app.get('/', (req, res) => {
-    console.log('server is running')
-    // res.send('<p>Home page</p>');
-    res.sendFile('./views/index.html', {root: __dirname});
-})
+// app.get('/', (req, res) => {
+//     console.log('server is running')
+//     // res.send('<p>Home page</p>');
+//     res.sendFile('./views/index.html', {root: __dirname});
+// })
 
-app.get('/about', (req, res) => {
-    res.sendFile('./views/about.html', {root: __dirname})
-})
+// app.get('/about', (req, res) => {
+//     res.sendFile('./views/about.html', {root: __dirname})
+// })
 
-app.get('/contact', (req, res) => {
-    res.sendFile('./views/contact.html', {root: __dirname})
-})
+// app.get('/contact', (req, res) => {
+//     res.sendFile('./views/contact.html', {root: __dirname})
+// })
 
-app.get('/htet', (req, res ) => {
-    res.sendFile('./views/htet.html', {root: __dirname} )
-})
+// app.get('/htet', (req, res ) => {
+//     res.sendFile('./views/htet.html', {root: __dirname} )
+// })
 
 //redirect 
 app.get('/about-us', (req, res) => {
