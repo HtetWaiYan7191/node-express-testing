@@ -6,7 +6,8 @@ const User = require('./models/user');
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-
+const likeRoutes = require('./routes/likeRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 // mongo db connect url
 const dbURL = "mongodb+srv://htetwaiyan7191:719171@node-express-tuto.2vir9km.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -33,6 +34,14 @@ app.use('/users', userRoutes);
 
 //use category routes
 app.use('/categories', categoryRoutes);
+
+//use like routes 
+app.use('/', likeRoutes );
+
+//use comment routes
+app.use('/comments', commentRoutes);
+
+//
 
 //create user 
 // app.post('/users', (req,res) => {
