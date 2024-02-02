@@ -33,11 +33,10 @@ const deleteComments = async (req, res) => {
 const commentFromBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
-    const blog = await Blog.findById(blogId).populate("comments");
+    const blog = await Blog.findById(blogId);
     if (!blog) return res.status(400).json({ message: "blog does not exist " });
 
-    console.log(blog);
-    const comments = blog.comments;
+    const comments =await Comment.find({blogId: blogId});
     console.log(comments);
     return res.status(200).json({
       messaage: ` ${blog.title} has ${blog.commentCount} comments `,
@@ -59,8 +58,8 @@ const addComment = async (req, res) => {
       blogId: blogId,
     });
     const result = await newComment.save();
-    const blog = await Blog.findById(blogId).populate('comments');
-    blog.comments.push(result)
+    // const blog = await Blog.findById(blogId).populate('comments');
+    // blog.comments.push(result)
     return res.status(200).json({
       message: "comment added successfully...",
       data: result,

@@ -27,8 +27,6 @@ commentSchema.post('save', async function (doc) {
     const blogId = doc.blogId;
     const Blog = require('../models/blog');
     await Blog.findByIdAndUpdate(blogId, { $inc: { commentCount: 1 } }); // increase the comment count on blog 
-    await Blog.findByIdAndUpdate(blogId, { $push: { comments : doc } }); // increase the comment count on blog 
-
 })
 
 const Comment = mongoose.model('Comment', commentSchema);
