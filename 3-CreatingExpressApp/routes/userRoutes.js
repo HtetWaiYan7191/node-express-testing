@@ -11,4 +11,7 @@ router.post('/signup', userController.userSignUp);
 
 // user log in 
 router.post('/login', userController.userLogIn);
+
+// verify email 
+router.get('/verify/:userId/:uniqueString', userController.verifyEmail);
 module.exports = router;
