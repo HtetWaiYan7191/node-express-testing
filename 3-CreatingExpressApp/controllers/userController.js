@@ -94,8 +94,42 @@ const userSignUp = async (req, res) => {
     }
 }
 
+const userLogIn = async (req, res) => {
+    let { email, password } = req.body;
+    email = email.trim();
+    password = password.trim();
+
+    if( email == "" || password == "" ) {
+        res.json({
+            status: 404,
+            message: 'Empty credentials supplied'
+        })
+    } else {
+        const result = await User.find({email});
+        console.log(result)
+        if(result) {
+            console.log(result)
+            const hashedPassword = result[0].password
+            const isPassword = await bcrypt.compare(password, hashedPassword)
+            if(isPassword) {
+                res.json({
+                    status: 200,
+                    message: 'Signin successful',
+                    data: result
+                })
+            } else {
+                res.json({
+                    status: 404,
+                    message: 'Sign in Fail. Invalid Password Entered :(',
+                })
+            }
+        }
+    }
+}
+
 module.exports = {
     userIndex,
     userSignUp,
+    userLogIn,
 }
 
