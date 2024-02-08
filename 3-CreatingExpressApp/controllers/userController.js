@@ -371,9 +371,36 @@ const sendResetEmail = async ({ _id, email }, redirectUrl, res) => {
     });
 };
 
+// password success email
+const passwordSuccessEmail = async (email, res) => {
+  // mail options
+  try {
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: " Password reset success ! ",
+      html: `<p> Your password has been updated successfully Yay ! :) ... </p>`,
+    };
+  
+    await transporter.sendMail(mailOptions);
+    return res.json({
+      status: "success",
+      message: " Password updated successfully ! :D",
+    });
+  } catch(err) {
+    res.json({
+      status: 404,
+      message: 'Password updated success email failed :('
+    })
+  }
+};
+
 // reset password
 const resetPassword = async (req, res) => {
   let { userId, resetString, newPassword, confirmPassword } = req.body;
+  const user = await User.findById(userId);
+  const email = user ? user.email : null;
+
   confirmPassword = confirmPassword.trim();
 
   if (confirmPassword.length < 8) {
@@ -414,12 +441,9 @@ const resetPassword = async (req, res) => {
                     User.findByIdAndUpdate(userId, {
                       password: hashedPassword,
                     }).then(() => {
-                      PasswordReset.deleteOne({ userId }).then(() =>
-                        res.json({
-                          status: 200,
-                          message: "User password updated successfully :) ",
-                        })
-                      );
+                      passwordSuccessEmail(email, res).then(() => {
+                        PasswordReset.deleteOne({ userId });
+                      });
                     });
                   })
                   .catch((err) => {
@@ -453,7 +477,7 @@ const resetPassword = async (req, res) => {
             });
           res.json({
             status: 404,
-            message: " Link has exipred since it has exipred 60 minutes ",
+            message: " Link has exipred since it expired time is 60 minutes ",
           });
         }
       } else {
