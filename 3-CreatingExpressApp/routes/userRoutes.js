@@ -14,4 +14,10 @@ router.post('/login', userController.userLogIn);
 
 // verify email 
 router.get('/verify/:userId/:uniqueString', userController.verifyEmail);
+
+// request password reset link 
+router.post('/requestPasswordReset', userController.requestPasswordReset);
+
+// reset password 
+router.post('/resetPassword', userController.resetPassword);
 module.exports = router;
