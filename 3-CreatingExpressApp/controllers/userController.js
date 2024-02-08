@@ -249,6 +249,31 @@ const userSignUp = async (req, res) => {
   }
 };
 
+// sent welcome email after login 
+
+const welcomeEmail = async (email, res, result) => {
+  try { 
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: " Welcome Email :D ",
+      html: `<p> Welcome To Blog App ! :) Subscripe the newsletter to keep up with latest technologies articles and blogs :D !!  </p>`,
+    };
+
+   await transporter.sendMail(mailOptions)
+   res.json({
+    status: 200,
+    message: 'Sign in Successful :) ',
+    data: result
+   })
+  } catch(err) {
+    res.json({
+      status: 404,
+      message: 'An error occured while sending a welcome email'
+    })
+  }
+}
+
 const userLogIn = async (req, res) => {
   let { email, password } = req.body;
   email = email.trim();
@@ -272,11 +297,7 @@ const userLogIn = async (req, res) => {
         const hashedPassword = result[0].password;
         const isPassword = await bcrypt.compare(password, hashedPassword);
         if (isPassword) {
-          res.json({
-            status: 200,
-            message: "Signin successful",
-            data: result,
-          });
+          welcomeEmail(email,res, result);
         } else {
           res.json({
             status: 404,
